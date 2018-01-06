@@ -75,8 +75,8 @@ class Notification(Device):
         return [self.group_address, ]
 
     @asyncio.coroutine
-    def process(self, telegram):
-        """Process incoming telegram."""
+    def process_group_write(self, telegram):
+        """Process incoming GROUP WRITE telegram."""
         if telegram.group_address == self.group_address:
             yield from self._process_message(telegram)
 

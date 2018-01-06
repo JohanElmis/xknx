@@ -63,8 +63,8 @@ class Sensor(Device):
         return [self.group_address, ]
 
     @asyncio.coroutine
-    def process(self, telegram):
-        """Process incoming telegram."""
+    def process_group_write(self, telegram):
+        """Process incoming GROUP WRITE telegram."""
         yield from self._set_internal_state(telegram.payload)
 
     def unit_of_measurement(self):

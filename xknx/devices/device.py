@@ -5,7 +5,7 @@ It provides basis functionality for reading the state from the KNX bus.
 """
 import asyncio
 
-from xknx.knx import Telegram
+from xknx.knx import Telegram, TelegramType
 
 
 class Device:
@@ -50,13 +50,14 @@ class Device:
             else:
                 yield from value_reader.send_group_read()
 
-    # XXX no longer needed!
     @asyncio.coroutine
-    def send(self, group_address, payload=None):
+    def send(self, group_address, payload=None, response=False):
         """Send payload as telegram to KNX bus."""
         telegram = Telegram()
         telegram.group_address = group_address
         telegram.payload = payload
+        telegram.telegramtype = TelegramType.GROUP_RESPONSE \
+            if response else TelegramType.GROUP_WRITE
         yield from self.xknx.telegrams.put(telegram)
 
     def state_addresses(self):
@@ -67,6 +68,28 @@ class Device:
     @asyncio.coroutine
     def process(self, telegram):
         """Process incoming telegram."""
+        if telegram.telegramtype == TelegramType.GROUP_WRITE:
+            yield from self.process_group_write(telegram)
+        elif telegram.telegramtype == TelegramType.GROUP_RESPONSE:
+            yield from self.process_group_response(telegram)
+        elif telegram.telegramtype == TelegramType.GROUP_READ:
+            yield from self.process_group_read(telegram)
+
+    @asyncio.coroutine
+    def process_group_read(self, telegram):
+        """Process incoming GROUP RESPONSE telegram."""
+        # The dafault is, that devices dont answer to group reads
+        pass
+
+    @asyncio.coroutine
+    def process_group_response(self, telegram):
+        """Process incoming GROUP RESPONSE telegram."""
+        # Per default mapped to group write.
+        yield from self.process_group_write(telegram)
+
+    @asyncio.coroutine
+    def process_group_write(self, telegram):
+        """Process incoming GROUP WRITE telegram."""
         pass
 
     def get_name(self):

@@ -271,8 +271,8 @@ class Climate(Device):
         return operation_modes
 
     @asyncio.coroutine
-    def process(self, telegram):
-        """Process incoming telegram."""
+    def process_group_write(self, telegram):
+        """Process incoming GROUP WRITE telegram."""
         if self.supports_operation_mode and \
                 telegram.group_address == self.group_address_operation_mode or \
                 telegram.group_address == self.group_address_operation_mode_state:

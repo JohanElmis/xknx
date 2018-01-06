@@ -43,11 +43,16 @@ class Time(Device):
         return self.group_address == group_address
 
     @asyncio.coroutine
-    def broadcast_time(self):
+    def broadcast_time(self, response=False):
         """Broadcast time to KNX bus."""
         yield from self.send(
             self.group_address,
-            DPTArray(DPTTime.current_time_as_knx()))
+            DPTArray(DPTTime.current_time_as_knx()),
+            response=response)
+
+    @asyncio.coroutine
+    def process_group_read(self, telegram):
+        yield from self.broadcast_time(True)
 
     @asyncio.coroutine
     def sync(self, wait_for_result=True):

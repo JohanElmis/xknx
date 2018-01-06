@@ -135,8 +135,8 @@ class BinarySensor(Device):
         return 1
 
     @asyncio.coroutine
-    def process(self, telegram):
-        """Process incoming telegram."""
+    def process_group_write(self, telegram):
+        """Process incoming GROUP WRITE telegram."""
         bit_masq = 1 << (self.significant_bit-1)
         binary_value = telegram.payload.value & bit_masq != 0
 

@@ -231,8 +231,8 @@ class Cover(Device):
         return state_addresses
 
     @asyncio.coroutine
-    def process(self, telegram):
-        """Process incoming telegram."""
+    def process_group_write(self, telegram):
+        """Process incoming GROUP WRITE telegram."""
         position_processed = yield from self.position.process(telegram)
         if position_processed:
             self.travelcalculator.set_position(self.position.value)

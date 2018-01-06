@@ -148,8 +148,8 @@ class Light(Device):
         return state_addresses
 
     @asyncio.coroutine
-    def process(self, telegram):
-        """Process incoming telegram."""
+    def process_group_write(self, telegram):
+        """Process incoming GROUP WRITE telegram."""
         yield from self.switch.process(telegram)
 
         if (self.supports_dimming and
