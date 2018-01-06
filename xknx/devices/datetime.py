@@ -73,6 +73,7 @@ class DateTime(Device):
 
     @asyncio.coroutine
     def process_group_read(self, telegram):
+        """Process incoming GROUP RESPONSE telegram."""
         yield from self.broadcast_time(True)
 
     @asyncio.coroutine
