@@ -38,8 +38,6 @@ class DPTHVACMode(DPTBase):
             return HVACOperationMode.AUTO
         raise CouldNotParseKNXIP("Could not parse HVACOperationMode")
 
-        raise CouldNotParseKNXIP("Could not parse HVACOperationMode")
-
     @classmethod
     def to_knx(cls, value):
         """Serialize to KNX/IP raw data."""
@@ -53,8 +51,6 @@ class DPTHVACMode(DPTBase):
             return (3,)
         elif value == HVACOperationMode.FROST_PROTECTION:
             return (4,)
-        return None
-
         raise CouldNotParseKNXIP("Could not parse HVACOperationMode")
 
 
@@ -81,8 +77,6 @@ class DPTControllerStatus(DPTBase):
             return HVACOperationMode.STANDBY
         elif raw[0] & 1 > 0:
             return HVACOperationMode.COMFORT
-        raise CouldNotParseKNXIP("Could not parse HVACOperationMode")
-
         raise CouldNotParseKNXIP("Could not parse HVACOperationMode")
 
     @classmethod

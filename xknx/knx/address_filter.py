@@ -56,8 +56,6 @@ class AddressFilter:
             return self._match_free(address)
         return False
 
-        return False
-
     def _match_level3(self, address):
         return (
             self.level_filters[0].match(address.main)
