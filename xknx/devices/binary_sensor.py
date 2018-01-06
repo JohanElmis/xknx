@@ -40,6 +40,7 @@ class BinarySensor(Device):
                  group_address=None,
                  device_class=None,
                  significant_bit=1,
+                 reset_after=None,
                  actions=None,
                  device_updated_cb=None):
         """Initialize BinarySensor class."""
@@ -55,6 +56,7 @@ class BinarySensor(Device):
         self.group_address = group_address
         self.device_class = device_class
         self.significant_bit = significant_bit
+        self.reset_after = reset_after
         self.state = BinarySensorState.OFF
         self.actions = actions
 
@@ -142,6 +144,9 @@ class BinarySensor(Device):
             yield from self._set_internal_state(BinarySensorState.OFF)
         elif binary_value == 1:
             yield from self._set_internal_state(BinarySensorState.ON)
+            if self.reset_after is not None:
+                yield from asyncio.sleep(self.reset_after/1000)
+                yield from self._set_internal_state(BinarySensorState.OFF)
         else:
             raise CouldNotParseTelegram()
 
